@@ -1,0 +1,10 @@
+1. read file into hashmap
+    - make hashmap in c? are there built in data structures in the std library? NO
+    - how do i read a whole file?
+    -
+
+p,key,value
+g,key
+d,key
+c
+a

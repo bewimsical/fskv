@@ -1,0 +1,3 @@
+/Users/katiewims/CLionProjects/SmallProgramming4/cmake-build-debug/CMakeFiles/fskv.dir
+/Users/katiewims/CLionProjects/SmallProgramming4/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/katiewims/CLionProjects/SmallProgramming4/cmake-build-debug/CMakeFiles/rebuild_cache.dir
