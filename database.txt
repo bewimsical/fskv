@@ -1,1 +1,2 @@
-10, cat
+10,    cat
+50,  Hazel

@@ -213,9 +213,7 @@ int main(const int argc, char* argv[]){
 
     struct node *current = data_list.head;
     while (NULL != current) {
-        printf("%d, %s\n", current->data.key, current->data.name);
         fprintf(fp,"%d, %s\n", current->data.key, current->data.name);
-
         current = current->next;
 
     }

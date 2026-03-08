@@ -6,5 +6,4 @@ set(CMAKE_C_STANDARD 11)
 add_executable(fskv main.c
         linkedlist.c
         linkedlist.h
-        hashmap.c
-        hashmap.h)
+)

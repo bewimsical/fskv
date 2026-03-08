@@ -61,12 +61,6 @@ build CMakeFiles/fskv.dir/linkedlist.c.o: C_COMPILER__fskv_unscanned_Debug /User
   OBJECT_DIR = CMakeFiles/fskv.dir
   OBJECT_FILE_DIR = CMakeFiles/fskv.dir
 
-build CMakeFiles/fskv.dir/hashmap.c.o: C_COMPILER__fskv_unscanned_Debug /Users/katiewims/CLionProjects/SmallProgramming4/hashmap.c || cmake_object_order_depends_target_fskv
-  DEP_FILE = CMakeFiles/fskv.dir/hashmap.c.o.d
-  FLAGS = -g -std=gnu11 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX26.2.sdk -fcolor-diagnostics
-  OBJECT_DIR = CMakeFiles/fskv.dir
-  OBJECT_FILE_DIR = CMakeFiles/fskv.dir
-
 
 # =============================================================================
 # Link build statements for EXECUTABLE target fskv
@@ -75,7 +69,7 @@ build CMakeFiles/fskv.dir/hashmap.c.o: C_COMPILER__fskv_unscanned_Debug /Users/k
 #############################################
 # Link the executable fskv
 
-build fskv: C_EXECUTABLE_LINKER__fskv_Debug CMakeFiles/fskv.dir/main.c.o CMakeFiles/fskv.dir/linkedlist.c.o CMakeFiles/fskv.dir/hashmap.c.o
+build fskv: C_EXECUTABLE_LINKER__fskv_Debug CMakeFiles/fskv.dir/main.c.o CMakeFiles/fskv.dir/linkedlist.c.o
   FLAGS = -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX26.2.sdk
   OBJECT_DIR = CMakeFiles/fskv.dir
   POST_BUILD = :
