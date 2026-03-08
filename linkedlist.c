@@ -4,6 +4,7 @@
 
 #include "linkedlist.h"
 
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -65,13 +66,13 @@ static void free_node(struct node* node) {
     free(node);
 }
 
-void delete(struct linked_list* list, const int key) {
+bool delete(struct linked_list* list, const int key) {
     //trail current "tc"
     struct node *previous = NULL;
     struct node *current = list->head;
 
     if (current == NULL) {
-        return;
+        return false;
     }
     while (current!= NULL) {
         if (current->data.key == key) {
@@ -83,11 +84,13 @@ void delete(struct linked_list* list, const int key) {
             }
             //deallocate memory
             free_node(current);
-            return;
+            return true;
+
         }
         previous = current;
         current = current->next;
     }
+    return false;
 }
 
 void clear(struct linked_list* list) {

@@ -4,6 +4,7 @@
 
 #ifndef LINKEDLIST_H
 #define LINKEDLIST_H
+#include <stdbool.h>
 
 struct data {
     int key;
@@ -26,7 +27,7 @@ struct linked_list {
 void init(struct linked_list* list);
 void add(struct linked_list* list, int key, const char* name);
 struct node* find(struct linked_list* list, int key);
-void delete(struct linked_list* list, const int key);
+bool delete(struct linked_list* list, const int key);
 void clear(struct linked_list* list);
 
 #endif //LINKEDLIST_H

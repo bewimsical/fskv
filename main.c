@@ -31,6 +31,22 @@ long convert_key(const char* key) {
     return key_val;
 }
 
+void split_string(char* command, int count, const char *data[]) {
+
+    char *token;
+
+    //separate into array at the comma
+    if ((token = strtok(command, ",")) != NULL) {
+        data[0] = token;
+
+        for (int i = 1; i < count; ++i) {
+            if ((token = strtok(NULL, ",")) != NULL){
+                data[i] = token;
+            }
+        }
+    }
+}
+
 int main(const int argc, char* argv[]){
 
     struct linked_list data_list;
@@ -64,11 +80,11 @@ int main(const int argc, char* argv[]){
         const char *data[2] = {0,0};
 
         //separate into array at the comma
-        if ((token = strtok(buffer, ",")) != NULL) {
-            data[0] = token;
-            if ((token = strtok(NULL, ",")) != NULL){
-                data[1] = token;
-            }
+         if ((token = strtok(buffer, ",")) != NULL) {
+             data[0] = token;
+             if ((token = strtok(NULL, ",")) != NULL){
+                 data[1] = token;
+             }
 
             //check if the key is null --
             if (data[0] != NULL) {
@@ -76,7 +92,7 @@ int main(const int argc, char* argv[]){
                 long key_val = convert_key(data[0]);
                 //check if there was a conversion error
                 if (key_val == LONG_MAX || key_val == LONG_MIN) {
-                    fprintf(stderr, "Invalid key value. Keys must be integers.");
+                    fprintf(stderr, "Invalid key value. Keys must be integers.\n");
                     return 1;
                 }
                 //cast key to an integer
@@ -90,14 +106,14 @@ int main(const int argc, char* argv[]){
     fclose(fp);
 
     for (int i = 1; i < argc; ++i) {
-        const char* command = argv[i];
+        char* command = argv[i];
         int commas = count_commas(command);
         //command must be c or a
         if (commas == 0) {
             //command is c - clear the database. an "are you sure you want to clear the database" would be nice here.
             if (*command == 'c') {
                 clear(&data_list);
-            //print the database
+                //command is a - print the database
             }else if ( *command == 'a') {
                 struct node *current = data_list.head;
                 while (NULL != current) {
@@ -107,33 +123,102 @@ int main(const int argc, char* argv[]){
             }else {
                 fprintf(stderr, "bad command\n");
             }
-        // command is g or d
+            // command is g or d
         }else if (commas == 1) {
+            const char *data[2] = {0,0};
             //split into an array
-            //check 0 index
-            //perform task
-        //command is p
+            split_string(command,commas+1,data);
+            int key;
+            if (data[1] != NULL) {
+                //convert the key to a long
+                long key_val = convert_key(data[1]);
+                //check if there was a conversion error
+                if (key_val == LONG_MAX || key_val == LONG_MIN) {
+                    fprintf(stderr, "Invalid key value. Keys must be integers.\n");
+                    return 1;
+                }
+                //cast key to an integer
+                key = (int) key_val;
+            }else {
+                fprintf(stderr, "Missing key value.\n");
+                return 1;
+            }
+            //command is g - print the database entry
+            if (*data[0] == 'g') {
+                struct node *the_node = find(&data_list, key);
+                if (the_node != NULL) {
+                    printf("%d,%s\n", key, the_node->data.name);
+                }else {
+                    printf("%d not found\n", key);
+                }
+                //command is d - delete the database entry
+            }else if (*data[0] == 'd') {
+                if (false ==  delete(&data_list, key)) {
+                    printf("%d not found\n", key);
+                }
+            }else {
+                fprintf(stderr, "bad command\n");
+            }
+
+            //command is p
         }else if (commas == 2) {
+            const char *data[3] = {0,0,0};
             //spit into an array
-            //check 0 index
-            //perfrom task
-        //commas greater than 2 - this is a bad command
+            split_string(command,commas+1,data);
+            int key;
+            if (data[1] != NULL) {
+                //convert the key to a long
+                long key_val = convert_key(data[1]);
+                //check if there was a conversion error
+                if (key_val == LONG_MAX || key_val == LONG_MIN) {
+                    fprintf(stderr, "Invalid key value. Keys must be integers.");
+                    return 1;
+                }
+                //cast key to an integer
+                key = (int) key_val;
+            }else {
+                fprintf(stderr, "Missing key value.\n");
+                return 1;
+            }
+            //command is p - put entry into the database
+            if (*data[0] == 'p') {
+                struct node *the_node = find(&data_list, key);
+                if (the_node != NULL) {
+                    //free the node
+                    free(the_node->data.name);
+                    //malloc new pointer
+                    char* p_name =  (char*) malloc(strlen(data[2])+1);
+                    //copy value into the new pointer
+                    strcpy(p_name, data[2]);
+                    //assign to data.name
+                    the_node->data.name = p_name;
+                }else {
+                    add(&data_list,key,data[2]);
+                }
+            }else {
+                fprintf(stderr, "bad command\n");
+            }
         }else {
             fprintf(stderr, "bad command\n");
         }
-
     }
 
     //clear the database
-
+    fp = fopen("../database.txt", "w");
     //add data from list into database
+    if (fp == NULL) {
+        printf("fskv: cannot open file\n");//hmm?
+        return(1);
+    }
 
-    //test that the data is in the list
     struct node *current = data_list.head;
     while (NULL != current) {
         printf("%d, %s\n", current->data.key, current->data.name);
+        fprintf(fp,"%d, %s\n", current->data.key, current->data.name);
+
         current = current->next;
 
     }
-        return 0;
+    fclose(fp);
+    return 0;
 }
